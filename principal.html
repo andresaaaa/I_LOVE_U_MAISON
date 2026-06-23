@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Principal</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Outfit:wght@300;500&display=swap');
+
+  * { box-sizing: border-box; margin:0; padding:0; }
+
+  body {
+    background: linear-gradient(135deg, #ffe6ea 0%, #ffd1dc 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    font-family: 'Outfit', sans-serif;
+    color: #4a0010;
+    overflow-x: hidden;
+    padding: 20px;
+  }
+
+  .container {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px);
+    border-radius: 20px;
+    padding: 50px 40px;
+    box-shadow: 0 15px 35px rgba(255, 105, 180, 0.25);
+    max-width: 650px;
+    text-align: center;
+    position: relative;
+    border: 2px solid rgba(255, 255, 255, 0.6);
+  }
+
+  /* animacion01: Video */
+  .animacion01 {
+    width: 100%;
+    max-width: 300px;
+    border-radius: 15px;
+    margin: 0 auto 40px auto;
+    display: block;
+    box-shadow: 0 10px 25px rgba(255, 105, 180, 0.3);
+  }
+
+  /* The message */
+  .message {
+    font-family: 'Caveat', cursive;
+    font-size: clamp(24px, 5vw, 32px);
+    line-height: 1.6;
+    margin-bottom: 50px;
+    color: #800020;
+    text-shadow: 1px 1px 2px rgba(255,255,255,0.8);
+  }
+
+  /* Ribbon Decoration */
+  .ribbon-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 30px;
+    position: relative;
+    z-index: 10;
+  }
+
+  .ribbon {
+    width: 220px;
+    height: 46px;
+    background: #ff4d6d;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 20px;
+    box-shadow: 0 5px 15px rgba(255, 77, 109, 0.3);
+    border-radius: 4px;
+    letter-spacing: 2px;
+  }
+
+  .ribbon::before,
+  .ribbon::after {
+    content: "";
+    position: absolute;
+    top: 10px;
+    z-index: -1;
+    border: 23px solid #c9184a;
+    border-top-width: 23px;
+    border-bottom-width: 23px;
+  }
+
+  .ribbon::before {
+    left: -35px;
+    border-left-color: transparent;
+  }
+
+  .ribbon::after {
+    right: -35px;
+    border-right-color: transparent;
+  }
+  
+  /* Additional floating effects */
+  .bg-hearts {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: -1;
+  }
+  
+  .bg-heart {
+    position: absolute;
+    color: rgba(255, 179, 198, 0.6);
+    font-size: 24px;
+    animation: float 10s linear infinite;
+  }
+
+  @keyframes float {
+    0% { transform: translateY(110vh) rotate(0deg) scale(0.8); opacity: 0; }
+    20% { opacity: 1; }
+    80% { opacity: 0.8; }
+    100% { transform: translateY(-100px) rotate(360deg) scale(1.2); opacity: 0; }
+  }
+
+  .next-btn {
+    margin-top: 30px;
+    padding: 12px 30px;
+    background: #c9184a;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    font-size: 18px;
+    font-family: 'Outfit', sans-serif;
+    cursor: pointer;
+    text-decoration: none;
+    box-shadow: 0 4px 15px rgba(201, 24, 74, 0.4);
+    transition: transform 0.2s, background 0.2s;
+    display: inline-block;
+  }
+
+  .next-btn:hover {
+    background: #a01a40;
+    transform: scale(1.05);
+  }
+</style>
+</head>
+<body>
+  
+  <div class="bg-hearts" id="bgHearts"></div>
+
+  <div class="container">
+    <video class="animacion01" src="src/animations/animation 01.mp4" autoplay loop muted playsinline></video>
+    <div class="message">
+      I love you so much, you are the best man in this world. I want to hug you every day and make you happy for all eternity.
+      <br><br>
+      te quiero mucho mi niño lindo
+    </div>
+    <div class="ribbon-container">
+      <div class="ribbon">♡ ♡ ♡</div>
+    </div>
+    <a href="sorry_screen.html" class="next-btn">Next ➔</a>
+  </div>
+
+  <script>
+    // Generate soft floating hearts in the background
+    const bgHearts = document.getElementById('bgHearts');
+    for (let i = 0; i < 25; i++) {
+      let heart = document.createElement('div');
+      heart.className = 'bg-heart';
+      heart.innerHTML = '❤';
+      heart.style.left = Math.random() * 100 + 'vw';
+      heart.style.animationDuration = (8 + Math.random() * 12) + 's';
+      heart.style.animationDelay = (Math.random() * 10) + 's';
+      heart.style.fontSize = (15 + Math.random() * 30) + 'px';
+      bgHearts.appendChild(heart);
+    }
+  </script>
+</body>
+</html>

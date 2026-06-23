@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Love Game</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;600&family=Outfit:wght@300;400;600&display=swap');
+
+  * { box-sizing: border-box; margin:0; padding:0; user-select: none; }
+
+  body {
+    background: linear-gradient(to bottom, #1a0b2e, #4a1942, #7a2156);
+    overflow: hidden;
+    font-family: 'Outfit', sans-serif;
+    color: white;
+    min-height: 100vh;
+    touch-action: none;
+  }
+
+  .score-board {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    font-size: 24px;
+    font-weight: 600;
+    background: rgba(0,0,0,0.4);
+    padding: 10px 20px;
+    border-radius: 15px;
+    border: 2px solid #ff4d6d;
+    z-index: 100;
+  }
+
+  .heart-target {
+    position: absolute;
+    font-size: 50px;
+    cursor: pointer;
+    animation: fallDown linear forwards;
+    filter: drop-shadow(0 0 10px rgba(255, 77, 109, 0.8));
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  @keyframes fallDown {
+    0% { transform: translateY(-80px) rotate(-10deg); }
+    100% { transform: translateY(110vh) rotate(20deg); }
+  }
+
+  /* The Gift Screen */
+  .gift-screen {
+    position: absolute;
+    inset: 0;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,0.85);
+    z-index: 200;
+    backdrop-filter: blur(5px);
+  }
+
+  .gift-box {
+    font-size: 150px;
+    cursor: pointer;
+    animation: bounce 1s infinite alternate;
+    filter: drop-shadow(0 0 30px #ffb3c6);
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  .gift-instruction {
+    margin-top: 30px;
+    font-size: 36px;
+    font-family: 'Caveat', cursive;
+    color: #ffb3c6;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+  }
+
+  @keyframes bounce {
+    0% { transform: translateY(0) scale(1); }
+    100% { transform: translateY(-30px) scale(1.05); }
+  }
+
+  /* Final Message Screen */
+  .final-screen {
+    position: absolute;
+    inset: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #1a0b2e, #ff4d6d);
+    z-index: 300;
+    padding: 20px;
+    overflow-y: auto;
+  }
+
+  .message-card {
+    background: rgba(255,255,255,0.95);
+    border-radius: 20px;
+    padding: 40px;
+    max-width: 700px;
+    color: #4a0010;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+    animation: popIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    margin: auto;
+  }
+
+  @media (max-height: 800px) {
+    .final-screen {
+      align-items: flex-start;
+    }
+    .message-card {
+      margin: 20px auto;
+    }
+  }
+
+  @keyframes popIn {
+    0% { transform: scale(0.5); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+
+  .message-card h2 {
+    font-family: 'Caveat', cursive;
+    font-size: 40px;
+    margin-bottom: 20px;
+    color: #c9184a;
+    text-align: center;
+  }
+
+  .message-card p {
+    font-size: 20px;
+    line-height: 1.6;
+    margin-bottom: 15px;
+  }
+
+  .lyrics {
+    font-style: italic;
+    background: #fff0f3;
+    padding: 25px;
+    border-radius: 15px;
+    border-left: 5px solid #ff4d6d;
+    margin-top: 25px;
+    font-size: 19px;
+    line-height: 1.7;
+    color: #800f2f;
+  }
+</style>
+</head>
+<body>
+
+  <div class="score-board">Hearts: <span id="score">0</span> / 15</div>
+  <div id="gameContainer"></div>
+
+  <!-- Gift Screen -->
+  <div class="gift-screen" id="giftScreen">
+    <div class="gift-box" id="giftBox">🎁</div>
+    <div class="gift-instruction">You did it! Tap the gift to open.</div>
+  </div>
+
+  <!-- Final Screen -->
+  <div class="final-screen" id="finalScreen">
+    <div class="message-card">
+      <h2>A Gift For You</h2>
+      <p>Well done, you won the game, here I give you a gift, I tried very hard to do it, it's a totally new song from scratch, I called it FIRST AND ONLY and I made it thinking of you, I know the result is not very good but I really didn't want to make you wait too long, here are the lyrics:</p>
+      
+      <div class="lyrics">
+        I can't explain how much I feel for you<br>
+        I ask for your forgiveness, please give me your love<br><br>
+        Let me bring your heart back into the light<br>
+        Look in my eyes, see the truth in my words<br><br>
+        I hate myself for causing you this pain,<br>
+        I lost your love and threw away your kindness<br><br>
+        Please give me your grace, don't walk away,<br>
+        I'll spend my lifetime fixing my mistakes.<br>
+        Just give me a chance to make it right,<br>
+        And bring our love back into the light<br><br>
+        I broke every promise I swore to keep.<br>
+        My broken words just left you all alone.
+      </div>
+      
+      <!-- Hidden Audio Player -->
+      <audio id="bgAudio" src="src/animations/FIRST AND ONLY.m4a"></audio>
+    </div>
+  </div>
+
+  <script>
+    let score = 0;
+    const maxScore = 15;
+    const scoreEl = document.getElementById('score');
+    const gameContainer = document.getElementById('gameContainer');
+    const giftScreen = document.getElementById('giftScreen');
+    const giftBox = document.getElementById('giftBox');
+    const finalScreen = document.getElementById('finalScreen');
+    const bgAudio = document.getElementById('bgAudio');
+    
+    let gameInterval;
+
+    function spawnHeart() {
+      if(score >= maxScore) return;
+
+      let heart = document.createElement('div');
+      heart.className = 'heart-target';
+      heart.innerHTML = '💖';
+      // Keep heart safely within screen bounds
+      heart.style.left = (5 + Math.random() * 85) + 'vw';
+      
+      let duration = 2.5 + Math.random() * 2.5; // fall speed between 2.5s and 5s
+      heart.style.animationDuration = duration + 's';
+      
+      const catchHeart = (e) => {
+        if(e.cancelable) e.preventDefault();
+        
+        heart.remove();
+        score++;
+        scoreEl.innerText = score;
+        
+        // Pop effect
+        let pop = document.createElement('div');
+        pop.innerHTML = '✨';
+        pop.style.position = 'absolute';
+        pop.style.left = heart.style.left;
+        pop.style.top = heart.getBoundingClientRect().top + 'px';
+        pop.style.fontSize = '40px';
+        pop.style.pointerEvents = 'none';
+        document.body.appendChild(pop);
+        
+        setTimeout(() => pop.remove(), 500);
+
+        if(score >= maxScore) {
+          endGame();
+        }
+      };
+
+      heart.addEventListener('mousedown', catchHeart);
+      heart.addEventListener('touchstart', catchHeart, {passive: false});
+
+      gameContainer.appendChild(heart);
+
+      // Clean up if it reaches bottom
+      setTimeout(() => {
+        if(heart.parentNode) heart.remove();
+      }, duration * 1000);
+    }
+
+    function startGame() {
+      // spawn a heart every 500ms
+      gameInterval = setInterval(spawnHeart, 500); 
+    }
+
+    function endGame() {
+      clearInterval(gameInterval);
+      gameContainer.innerHTML = '';
+      giftScreen.style.display = 'flex';
+    }
+
+    giftBox.addEventListener('click', () => {
+      giftScreen.style.display = 'none';
+      finalScreen.style.display = 'flex';
+      // Play audio
+      bgAudio.play().catch(e => console.log("Audio play failed:", e));
+    });
+
+    // Start
+    startGame();
+  </script>
+</body>
+</html>

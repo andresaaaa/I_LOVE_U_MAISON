@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>You're the cutest</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;600&family=Outfit:wght@300;400;500&display=swap');
+
+  * { box-sizing: border-box; margin:0; padding:0; }
+
+  body {
+    background: linear-gradient(135deg, #ffb3c6 0%, #ff8fab 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    font-family: 'Outfit', sans-serif;
+    color: #590d22;
+    overflow-x: hidden;
+    padding: 20px;
+  }
+
+  .main-card {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(15px);
+    border-radius: 25px;
+    box-shadow: 0 20px 40px rgba(201, 24, 74, 0.4);
+    max-width: 800px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 40px;
+    gap: 40px;
+    border: 3px solid #ffccd5;
+    position: relative;
+    animation: scaleIn 0.8s ease-out;
+  }
+
+  @keyframes scaleIn {
+    0% { transform: scale(0.8); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+
+  .image-container {
+    flex: 0 0 300px;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+    position: relative;
+  }
+  
+  .image-container img {
+    width: 100%;
+    display: block;
+    border-radius: 20px;
+    transition: transform 0.3s;
+  }
+
+  .image-container:hover img {
+    transform: scale(1.05);
+  }
+
+  .image-container::after {
+    content: "♡";
+    position: absolute;
+    bottom: -15px;
+    right: -15px;
+    font-size: 50px;
+    color: #ff4d6d;
+    text-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+    transform: rotate(15deg);
+  }
+
+  .message {
+    flex: 1;
+    font-family: 'Caveat', cursive;
+    font-size: clamp(22px, 3vw, 30px);
+    line-height: 1.5;
+    color: #800f2f;
+  }
+
+  @media (max-width: 768px) {
+    .main-card {
+      flex-direction: column;
+      text-align: center;
+    }
+    .image-container {
+      width: 100%;
+      max-width: 300px;
+      flex: 0 0 auto;
+    }
+  }
+
+  /* Decorations */
+  .deco-heart {
+    position: absolute;
+    color: #ff4d6d;
+    opacity: 0.5;
+    animation: pulse 2s infinite alternate;
+  }
+
+  @keyframes pulse {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.2); }
+  }
+
+  .h1 { top: -20px; left: -20px; font-size: 60px; transform: rotate(-20deg); }
+  .h2 { bottom: -30px; right: 40px; font-size: 80px; transform: rotate(15deg); opacity: 0.3; }
+  .h3 { top: 50px; right: -30px; font-size: 50px; transform: rotate(30deg); }
+
+  /* Background Floating Elements */
+  .floating-bg {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: -1;
+    overflow: hidden;
+  }
+  .f-heart {
+    position: absolute;
+    color: rgba(255, 255, 255, 0.4);
+    animation: floatUp 12s linear infinite;
+  }
+
+  @keyframes floatUp {
+    0% { transform: translateY(110vh) rotate(0deg) scale(0.8); opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { transform: translateY(-10vh) rotate(360deg) scale(1.2); opacity: 0; }
+  }
+
+  .next-btn {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 12px 35px;
+    background: #ff4d6d;
+    color: white;
+    border-radius: 30px;
+    font-size: 20px;
+    font-weight: 600;
+    text-decoration: none;
+    box-shadow: 0 5px 15px rgba(255, 77, 109, 0.4);
+    transition: transform 0.2s;
+  }
+  .next-btn:hover {
+    transform: scale(1.05);
+    background: #c9184a;
+  }
+</style>
+</head>
+<body>
+
+  <div class="floating-bg" id="floatingBg"></div>
+
+  <div class="main-card">
+    <div class="deco-heart h1">❤</div>
+    <div class="deco-heart h2">❤</div>
+    <div class="deco-heart h3">❤</div>
+    
+    <div class="image-container">
+      <img src="src/animations/imagen1.png" alt="Cute Boy">
+    </div>
+    
+    <div class="message">
+      You know what? You're the cutest boy I've ever seen. I mean it. I created this character thinking of you. That's how I see you: someone so cute, kind, thoughtful, funny, and naughty. I love you just the way you are.
+      <br>
+      <div style="text-align: right;">
+        <a href="love_game.html" class="next-btn">Next ➔</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Create floating background hearts
+    const bgContainer = document.getElementById('floatingBg');
+    for(let i = 0; i < 25; i++) {
+      let heart = document.createElement('div');
+      heart.className = 'f-heart';
+      heart.innerHTML = '❤';
+      heart.style.left = Math.random() * 100 + 'vw';
+      heart.style.fontSize = (15 + Math.random() * 40) + 'px';
+      heart.style.animationDuration = (8 + Math.random() * 12) + 's';
+      heart.style.animationDelay = (Math.random() * 5) + 's';
+      bgContainer.appendChild(heart);
+    }
+  </script>
+</body>
+</html>

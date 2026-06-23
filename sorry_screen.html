@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Letter For You</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;600&family=Outfit:wght@300;400;500&display=swap');
+
+  * { box-sizing: border-box; margin:0; padding:0; }
+
+  body {
+    background: linear-gradient(135deg, #ffccd5 0%, #ffb3c6 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    font-family: 'Outfit', sans-serif;
+    color: #590d22;
+    overflow-x: hidden;
+    padding: 20px;
+  }
+
+  /* Envelope View */
+  .envelope-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    transition: transform 0.3s;
+  }
+  .envelope-container:hover {
+    transform: scale(1.05);
+  }
+  
+  .envelope {
+    width: 300px;
+    height: 200px;
+    background: #ff8fab;
+    position: relative;
+    border-radius: 10px;
+    box-shadow: 0 10px 25px rgba(255, 77, 109, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .envelope::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-left: 150px solid transparent;
+    border-right: 150px solid transparent;
+    border-top: 100px solid #ff4d6d;
+    z-index: 2;
+  }
+  
+  .envelope-flap {
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-left: 150px solid #ff758f;
+    border-right: 150px solid #ff758f;
+    border-bottom: 100px solid transparent;
+    border-top: 100px solid transparent;
+    z-index: 1;
+  }
+
+  .envelope-text {
+    margin-top: 25px;
+    font-family: 'Caveat', cursive;
+    font-size: 32px;
+    color: #c9184a;
+    text-shadow: 1px 1px 2px rgba(255,255,255,0.5);
+  }
+
+  /* Letter View (Initially Hidden) */
+  .letter-view {
+    display: none;
+    width: 100%;
+    max-width: 900px;
+    background-color: #fff0f3;
+    background-image: radial-gradient(#ffb3c6 2px, transparent 2px);
+    background-size: 30px 30px;
+    border-radius: 8px;
+    box-shadow: 
+      0 15px 35px rgba(201, 24, 74, 0.3),
+      inset 0 0 60px rgba(255, 179, 198, 0.6);
+    padding: 60px 50px;
+    animation: fadeIn 1s ease forwards;
+    border: 2px solid #ffccd5;
+    position: relative;
+  }
+
+  /* Paper fold top-right corner */
+  .letter-view::before {
+    content: "";
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    border-width: 0 50px 50px 0;
+    border-style: solid;
+    border-color: #ffb3c6 #fff0f3 transparent transparent;
+    box-shadow: -4px 4px 8px rgba(201, 24, 74, 0.15);
+    border-bottom-left-radius: 5px;
+  }
+
+  /* Decorative Wax Seal */
+  .letter-view::after {
+    content: "♡";
+    position: absolute;
+    bottom: -25px;
+    right: 50px;
+    width: 70px;
+    height: 70px;
+    background: #c9184a;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffccd5;
+    font-size: 35px;
+    box-shadow: 3px 5px 15px rgba(0,0,0,0.3), inset 0 0 15px #800f2f;
+    border: 3px solid #a01a40;
+    transform: rotate(-10deg);
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .letter-content-wrapper {
+    position: relative;
+    padding: 30px 0;
+    border-top: 2px dashed #ffb3c6;
+    border-bottom: 2px dashed #ffb3c6;
+    display: flex;
+    flex-direction: row;
+    gap: 40px;
+    align-items: center;
+  }
+
+  .letter-animation {
+    flex: 0 0 350px;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+  }
+  
+  .letter-animation video {
+    width: 100%;
+    display: block;
+    border-radius: 15px;
+  }
+
+  .letter-text {
+    flex: 1;
+    font-family: 'Caveat', cursive;
+    font-size: clamp(20px, 2.5vw, 26px);
+    line-height: 1.5;
+    color: #4a0010;
+  }
+
+  .letter-text p {
+    margin-bottom: 15px;
+  }
+
+  /* Responsive for mobile: stack video on top of text */
+  @media (max-width: 768px) {
+    .letter-content-wrapper {
+      flex-direction: column;
+    }
+    .letter-animation {
+      flex: 0 0 auto;
+      width: 100%;
+      max-width: 400px;
+    }
+  }
+
+  /* Background Floating Hearts */
+  .floating-hearts {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: -1;
+    overflow: hidden;
+  }
+  .f-heart {
+    position: absolute;
+    color: rgba(255, 255, 255, 0.6);
+    animation: floatUp 12s linear infinite;
+  }
+
+  @keyframes floatUp {
+    0% { transform: translateY(110vh) rotate(0deg) scale(0.8); opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { transform: translateY(-10vh) rotate(360deg) scale(1.2); opacity: 0; }
+  }
+
+  .next-btn {
+    padding: 10px 25px;
+    background: #c9184a;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    font-size: 18px;
+    font-family: 'Outfit', sans-serif;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(201, 24, 74, 0.4);
+    transition: transform 0.2s;
+  }
+  .next-btn:hover {
+    transform: scale(1.05);
+    background: #a01a40;
+  }
+
+  .snake {
+    position: fixed;
+    z-index: 1000;
+    pointer-events: none;
+    animation: popIn cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    transform: scale(0);
+  }
+
+  @keyframes popIn {
+    0% { transform: scale(0) rotate(-30deg); opacity: 0; }
+    100% { transform: scale(1) rotate(var(--rot)); opacity: 1; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="floating-hearts" id="floatingHearts"></div>
+
+  <!-- Envelope Screen -->
+  <div class="envelope-container" id="envelopeContainer">
+    <div class="envelope">
+      <div class="envelope-flap"></div>
+    </div>
+    <div class="envelope-text">Click to open</div>
+  </div>
+
+  <!-- Letter Screen -->
+  <div class="letter-view" id="letterView">
+    <div class="letter-content-wrapper">
+      <div class="letter-animation">
+        <video src="src/animations/animation02.mp4" autoplay loop muted playsinline></video>
+      </div>
+      <div class="letter-text">
+        <p>Maison, I'm writing this from the bottom of my heart.</p>
+        <p>I love you so much. You're the first person I've ever loved so deeply. I'd give my life for you, I'd give up everything for you. You're someone very special in my life.</p>
+        <p>Since I met you, my days are so much more fun. You make me laugh, you make me blush. Every day I look at your picture and I wish I could be by your side and never be apart from you.</p>
+        <p>I want to give you lots of kisses and hugs until you're tired. I want to make you laugh, make you happy, cook for you every day. I want to do everything with you and give you all my attention, only you and no one else.</p>
+        <p>What I did yesterday was unforgivable. I wasn't careful with you, I didn't keep my promises, and I regret it. You always think about me and what I like, you always think about making me happy. I apologize for not being there for you.</p>
+      </div>
+    </div>
+    <div style="text-align: right; margin-top: 20px;">
+      <button id="nextBtn" class="next-btn">Next ➔</button>
+    </div>
+  </div>
+
+  <script>
+    // Create floating background hearts
+    const heartsContainer = document.getElementById('floatingHearts');
+    for(let i = 0; i < 20; i++) {
+      let heart = document.createElement('div');
+      heart.className = 'f-heart';
+      heart.innerHTML = '❤';
+      heart.style.left = Math.random() * 100 + 'vw';
+      heart.style.fontSize = (15 + Math.random() * 30) + 'px';
+      heart.style.animationDuration = (8 + Math.random() * 10) + 's';
+      heart.style.animationDelay = (Math.random() * 5) + 's';
+      heartsContainer.appendChild(heart);
+    }
+
+    // Envelope click event
+    const envelopeContainer = document.getElementById('envelopeContainer');
+    const letterView = document.getElementById('letterView');
+
+    envelopeContainer.addEventListener('click', () => {
+      envelopeContainer.style.display = 'none';
+      letterView.style.display = 'block';
+    });
+
+    const nextBtn = document.getElementById('nextBtn');
+    nextBtn.addEventListener('click', () => {
+      // Create a massive amount of adorable snakes to fill the screen
+      for (let i = 0; i < 150; i++) {
+        let snake = document.createElement('img');
+        snake.className = 'snake';
+        snake.src = 'src/imagen2.png';
+        
+        snake.style.left = (Math.random() * 100) + 'vw';
+        snake.style.top = (Math.random() * 100) + 'vh';
+        
+        let size = 60 + Math.random() * 100;
+        snake.style.width = size + 'px';
+        snake.style.height = 'auto';
+        
+        let rot = (Math.random() * 360) + 'deg';
+        snake.style.setProperty('--rot', rot);
+        
+        snake.style.animationDuration = '0.6s';
+        snake.style.animationDelay = (Math.random() * 2) + 's';
+        
+        document.body.appendChild(snake);
+      }
+      
+      // Wait for snakes to cover the screen, hold for a moment, then navigate
+      setTimeout(() => {
+        window.location.href = 'beauty_screen.html';
+      }, 3500);
+    });
+  </script>
+</body>
+</html>
